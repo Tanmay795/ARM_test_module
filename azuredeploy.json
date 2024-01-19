@@ -50,7 +50,7 @@
         "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountName'))]"
       ],
       "properties": {
-        "scope": "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountName'))]",
+        "scope": "[resourceGroup().id]",
         "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/denyPublicBlobAccess",
         "displayName": "Deny public access to blob storage"
       }
