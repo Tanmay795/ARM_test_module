@@ -45,7 +45,7 @@
       "name": "restrictStorageAccountAccess",
       "location": "[resourceGroup().location]",
       "dependsOn": [
-        "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName'))]"
+        "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountName'))]"
       ],
       "properties": {
         "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/{policyDefinitionId}",
