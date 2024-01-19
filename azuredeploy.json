@@ -1,5 +1,3 @@
-// mainTemplate.json
-
 {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
@@ -9,7 +7,7 @@
       "type": "Microsoft.Storage/storageAccounts",
       "apiVersion": "2019-06-01",
       "name": "[parameters('storageAccountName')]",
-      "location": "eastus",
+      "location": "East US",
       "sku": {
         "name": "Standard_LRS",
         "tier": "Standard"
@@ -25,7 +23,7 @@
       "type": "Microsoft.Network/virtualNetworks",
       "apiVersion": "2020-05-01",
       "name": "[parameters('virtualNetworkName')]",
-      "location": "eastus",
+      "location": "East US",
       "properties": {
         "addressSpace": {
           "addressPrefixes": ["10.0.0.0/16"]
@@ -40,6 +38,44 @@
         ]
       }
     },
+     // Resource 3: Azure Policy Definition - Restrict Storage Account Access
+    {
+      "type": "Microsoft.Authorization/policyDefinitions",
+      "apiVersion": "2019-09-01",
+      "name": "restrictStorageAccountAccess",
+      "properties": {
+        "displayName": "Restrict access to storage account",
+        "description": "This policy restricts access to the specified storage account.",
+        "policyRule": {
+          "if": {
+            "not": {
+              "field": "Microsoft.Storage/storageAccounts/networkAcls.defaultAction",
+              "equals": "Deny"
+            }
+          },
+          "then": {
+            "effect": "deny"
+          }
+        }
+      }
+    },
+
+    // Resource 4: Azure Policy Assignment - Restrict Storage Account Access
+    {
+      "type": "Microsoft.Authorization/policyAssignments",
+      "apiVersion": "2019-09-01",
+      "name": "restrictStorageAccountAccessAssignment",
+      "dependsOn": [
+        "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountName'))]",
+        "[resourceId('Microsoft.Authorization/policyDefinitions', 'restrictStorageAccountAccess')]"
+      ],
+      "properties": {
+        "scope": "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountName'))]",
+        "policyDefinitionId": "[resourceId('Microsoft.Authorization/policyDefinitions', 'restrictStorageAccountAccess')]",
+        "displayName": "Restrict access to storage account"
+      }
+    }
+
   ],
   "parameters": {
     "storageAccountName": {
