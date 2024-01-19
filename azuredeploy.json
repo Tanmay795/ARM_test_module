@@ -39,19 +39,22 @@
       }
     },
      // Resource 3: Azure Policy Definition - Restrict Storage Account Access
-      {
+     {
       "type": "Microsoft.Authorization/policyAssignments",
       "apiVersion": "2019-09-01",
-      "name": "restrictStorageAccountAccess",
-      "location": "[resourceGroup().location]",
-      "dependsOn": [
-        "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountName'))]"
-      ],
+      "name": "restrictStorageAccountLocation",
       "properties": {
-        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/storageAccountSecureTransfer",
+        "displayName": "Enforce Allowed Locations Policy",
+        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/AllowedLocations",
         "scope": "[resourceGroup().id]",
-        "parameters": {},
-        "displayName": "Enforce Storage Account Secure Transfer"
+        "parameters": {
+          "listOfAllowedLocations": {
+            "value": [
+              "East US",
+              "West US"
+            ]
+          }
+        }
       }
     }
   ],
