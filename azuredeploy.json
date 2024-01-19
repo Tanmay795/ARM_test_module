@@ -39,42 +39,21 @@
       }
     },
      // Resource 3: Azure Policy Definition - Restrict Storage Account Access
-    {
-      "type": "Microsoft.Authorization/policyDefinitions",
+     {
+      "type": "Microsoft.Authorization/policyAssignments",
       "apiVersion": "2019-09-01",
       "name": "restrictStorageAccountAccess",
+      "location": "[resourceGroup().location]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName'))]"
+      ],
       "properties": {
-        "displayName": "Restrict access to storage account",
-        "description": "This policy restricts access to the specified storage account.",
-        "policyRule": {
-          "if": {
-            "not": {
-              "field": "Microsoft.Storage/storageAccounts/networkAcls.defaultAction",
-              "equals": "Deny"
-            }
-          },
-          "then": {
-            "effect": "deny"
-          }
-        }
+        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/{policyDefinitionId}",
+        "scope": "[resourceGroup().id]",
+        "parameters": {},
+        "displayName": "Restrict Storage Account Access"
       }
-    },
-
-  // Resource 4: Azure Policy Assignment - Restrict Storage Account Access
-{
-  "type": "Microsoft.Authorization/policyAssignments",
-  "apiVersion": "2019-09-01",
-  "name": "restrictStorageAccountAccessAssignment",
-  "dependsOn": [
-    "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountName'))]",
-    "[resourceId('Microsoft.Authorization/policyDefinitions', 'restrictStorageAccountAccess')]"
-  ],
-  "properties": {
-    "scope": "/subscriptions/4af242c8-43ab-4c5e-a68a-fcfbc25dc2d6",
-    "policyDefinitionId": "[resourceId('Microsoft.Authorization/policyDefinitions', 'restrictStorageAccountAccess')]",
-    "displayName": "Restrict access to storage account"
-  }
-}
+    }
 
   ],
   "parameters": {
