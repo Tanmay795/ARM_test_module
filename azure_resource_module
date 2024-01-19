@@ -6,13 +6,20 @@
       "type": "string",
       "minLength": 3,
       "maxLength": 24
+    },
+
+"location": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 24
     }
+
   },
     "resources": [{
       "type": "Microsoft.Storage/storageAccounts",
       "apiVersion": "2021-09-01",
       "name": "[parameters('storageName')]",
-      "location": "eastus",
+      "location": "[parameters('location')]",
       "sku": {
         "name": "Standard_LRS"
       },
