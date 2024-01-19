@@ -7,13 +7,11 @@
       "minLength": 3,
       "maxLength": 24
     },
-
-"location": {
+    "location": {
       "type": "string",
       "minLength": 3,
       "maxLength": 24
     }
-
   },
     "resources": [{
       "type": "Microsoft.Storage/storageAccounts",
