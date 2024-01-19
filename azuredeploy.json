@@ -40,21 +40,6 @@
         ]
       }
     },
-
-    // Resource 3: Azure Policy Assignment - Deny Public Blob Access
-    {
-      "type": "Microsoft.Authorization/policyAssignments",
-      "apiVersion": "2019-09-01",
-      "name": "denyPublicBlobAccessAssignment",
-      "dependsOn": [
-        "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountName'))]"
-      ],
-      "properties": {
-        "scope": "[resourceGroup().id]",
-        "policyDefinitionId": "/providers/Microsoft.Authorization/policyDefinitions/denyPublicBlobAccess",
-        "displayName": "Deny public access to blob storage"
-      }
-    }
   ],
   "parameters": {
     "storageAccountName": {
