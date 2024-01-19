@@ -70,7 +70,7 @@
         "[resourceId('Microsoft.Authorization/policyDefinitions', 'restrictStorageAccountAccess')]"
       ],
       "properties": {
-        "scope": "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountName'))]",
+        "scope": "/subscriptions/4af242c8-43ab-4c5e-a68a-fcfbc25dc2d6",
         "policyDefinitionId": "[resourceId('Microsoft.Authorization/policyDefinitions', 'restrictStorageAccountAccess')]",
         "displayName": "Restrict access to storage account"
       }
