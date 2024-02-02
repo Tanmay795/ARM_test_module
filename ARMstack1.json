@@ -97,7 +97,20 @@
           "subnet": {
             "id": "[parameters('subnetId')]"
           },
-          "privateLinkServiceConnections": "/subscriptions/4af242c8-43ab-4c5e-a68a-fcfbc25dc2d6/resourceGroups/myResourceGroup/providers/Microsoft.Storage/storageAccounts/tanmayteststorage"
+          "privateLinkServiceConnections": [{
+        "name": "storage-account-connection",
+        "properties": {
+          "privateLinkServiceId": "/subscriptions/4af242c8-43ab-4c5e-a68a-fcfbc25dc2d6/resourceGroups/myResourceGroup/providers/Microsoft.Storage/storageAccounts/tanmayteststackstorage",
+          "groupIds": [
+            "blob",
+            "file",
+            "queue",
+            "table"
+          ]
+        }
+      }
+    ]
+  },
         },
         "tags": "[parameters('tags')]"
       }
