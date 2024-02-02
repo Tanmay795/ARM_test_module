@@ -1,0 +1,106 @@
+// mainTemplate.json
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+      "storageAccountName": {
+        "type": "string",
+        "metadata": {
+          "description": "Name of the storage account."
+        }
+      },
+      "storageAccountSku": {
+        "type": "string",
+        "defaultValue": "Standard_LRS",
+        "allowedValues": [
+          "Standard_LRS",
+          "Standard_GRS",
+          "Standard_RAGRS",
+          "Standard_ZRS",
+          "Premium_LRS"
+        ],
+        "metadata": {
+          "description": "The SKU (performance tier) of the storage account."
+        }
+      },
+      "networkInterfaceName": {
+        "type": "string",
+        "metadata": {
+          "description": "Name of the network interface."
+        }
+      },
+      "privateEndpointName": {
+        "type": "string",
+        "metadata": {
+          "description": "Name of the private endpoint."
+        }
+      },
+      "location": {
+        "type": "string",
+        "metadata": {
+          "description": "Location for all resources."
+        }
+      },
+      "tags": {
+        "type": "object",
+        "defaultValue": {"Environment": "Production"},
+        "metadata": {
+          "description": "Tags to apply to all resources."
+        }
+      },
+      "subnetId": {
+        "type": "string",
+        "metadata": {
+          "description": "ID of the subnet."
+        }
+      }
+    },
+    "resources": [
+      {
+        "type": "Microsoft.Storage/storageAccounts",
+        "apiVersion": "2019-06-01",
+        "name": "[parameters('storageAccountName')]",
+        "location": "[parameters('location')]",
+        "sku": {
+          "name": "[parameters('storageAccountSku')]"
+        },
+        "kind": "StorageV2",
+        "properties": {},
+        "tags": "[parameters('tags')]"
+      },
+      {
+        "type": "Microsoft.Network/networkInterfaces",
+        "apiVersion": "2020-11-01",
+        "name": "[parameters('networkInterfaceName')]",
+        "location": "[parameters('location')]",
+        "properties": {
+          "ipConfigurations": [
+            {
+              "name": "ipconfig",
+              "properties": {
+                "privateIPAllocationMethod": "Dynamic",
+                "subnet": {
+                  "id": "[parameters('subnetId')]"
+                }
+              }
+            }
+          ]
+        },
+        "tags": "[parameters('tags')]"
+      },
+      {
+        "type": "Microsoft.Network/privateEndpoints",
+        "apiVersion": "2020-11-01",
+        "name": "[parameters('privateEndpointName')]",
+        "location": "[parameters('location')]",
+        "properties": {
+          "subnet": {
+            "id": "[parameters('subnetId')]"
+          },
+          "privateLinkServiceConnections": []
+        },
+        "tags": "[parameters('tags')]"
+      }
+    ]
+  }
+  
